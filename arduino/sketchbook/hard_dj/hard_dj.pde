@@ -8,8 +8,9 @@
  
 */
 
-
+#define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
+
 #include <MIDI.h>
 
 
