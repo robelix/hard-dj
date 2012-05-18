@@ -10,13 +10,12 @@
 
 #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
-
 #include <MIDI.h>
 
 
 
 // MIDI //
-#define MIDI_LISTEN_CHANNEL  5
+#define MIDI_LISTEN_CHANNEL  4
 #define MIDI_BUTTON_CHANNEL  1
 #define MIDI_FADER_CHANNEL   2
 #define MIDI_ENCODER_CHANNEL 3
@@ -47,6 +46,7 @@ const int ledR1 =  3;
 #define LED_R_CUE 5
 
 const int ledPins[NR_OF_LEDS] = {LED_L_PLAY, LED_R_PLAY, LED_L_CUE, LED_R_CUE};
+const int ledMappings[2] = {LED_L_PLAY, LED_R_PLAY};
 
 
 // FADER & POTIS //
@@ -108,16 +108,20 @@ void loop(){
 
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
-    if (note >1 && note < 6) {
-      digitalWrite(note, HIGH);
+    if (note < NR_OF_LEDS) {
+      digitalWrite(ledMappings[note], HIGH);
+      // reply for testing
+      MIDI.sendNoteOn(note,velocity,channel);
     }
 }
 
 
 
 void handleNoteOff(byte channel, byte note, byte velocity) {
-    if (note >1 && note < 6) {
-      digitalWrite(note, LOW);
+    if (note < NR_OF_LEDS) {
+      digitalWrite(ledMappings[note], LOW);
+      // reply for testing
+      MIDI.sendNoteOn(note,velocity,channel);
     }
 }
 

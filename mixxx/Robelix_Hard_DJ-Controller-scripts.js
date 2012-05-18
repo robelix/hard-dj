@@ -16,7 +16,6 @@ function HardDJ() {}
 //HardDJ.CUP_Button2_IsActive = false;
 
 
-
 HardDJ.init = function(id){
     //print ("Initalizing Reloop Digital Jockey 2 Controler Edition.");
 	HardDJ.resetLEDs();
@@ -28,25 +27,35 @@ HardDJ.init = function(id){
 
 }
 
+HardDJ.sendLEDon = function(lednr) {
+	    midi.sendShortMsg(0x83, lednr, 1);
+}
+HardDJ.sendLEDoff = function(lednr) {
+	    midi.sendShortMsg(0x93, lednr, 1);
+}
+
+
 HardDJ.resetLEDs = function() {
-    // TODO reset Leds.
+    HardDJ.sendLEDoff(0x00);
+    HardDJ.sendLEDoff(0x01);
 }
 
 
 HardDJ.isChannel1_Playing = function (value){
+  script.debug(1, 'playing', value, 0, 0);
   if(value == 0){
-	    midi.sendShortMsg(0x84, 0x02, 0);   // Turn on the Play LED1 off
+     HardDJ.sendLEDon(0x00);
   }
   else{ //if deck is playing 
-	    midi.sendShortMsg(0x94, 0x02, 1);   // Turn on the Play LED1 on
+    HardDJ.sendLEDoff(0x00);
   }
 }
 HardDJ.isChannel2_Playing = function (value){
   if(value == 0){
-	  midi.sendShortMsg(0x84, 0x03, HardDJ.ledOff);   // Turn on the Play LED2 off
+    HardDJ.sendLEDon(0x01);
   }
   else{
-	  midi.sendShortMsg(0x90, 0x03, HardDJ.ledOn);   // Turn on the Play LED2 on
+    HardDJ.sendLEDoff(0x01);
   }	
 }
 
