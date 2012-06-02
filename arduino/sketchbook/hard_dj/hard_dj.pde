@@ -20,6 +20,10 @@
 #define MIDI_FADER_CHANNEL   2
 #define MIDI_ENCODER_CHANNEL 3
 
+#define NOTE_VU_DECK_LEFT    100
+#define NOTE_VU_DECK_RIGHT   101
+#define NOTE_VU_MASTER_LEFT  102
+#define NOTE_VU_MASTER_RIGHT 103
 
 
 // BUTTONS //
@@ -47,6 +51,21 @@ const int ledR1 =  3;
 
 const int ledPins[NR_OF_LEDS] = {LED_L_PLAY, LED_R_PLAY, LED_L_CUE, LED_R_CUE};
 const int ledMappings[2] = {LED_L_PLAY, LED_R_PLAY};
+
+// VU //
+//Pin connected to latch pin (ST_CP) of 74HC595
+#define VU_LATCH_PIN 8
+//Pin connected to clock pin (SH_CP) of 74HC595
+#define VU_CLOCK_PIN 22
+////Pin connected to Data in (DS) of 74HC595
+#define VU_DATA_PIN 24
+
+char vuString[2];
+
+#define VU_PWM_PIN_G 12
+#define VU_PWM_PIN_R 13
+#define VU_PWM_PIN_B 0
+
 
 
 // FADER & POTIS //
@@ -91,6 +110,18 @@ void setup() {
   };
   pinMode(13,OUTPUT);
   
+  // init vu
+  pinMode(VU_LATCH_PIN, OUTPUT);
+  pinMode(VU_DATA_PIN, OUTPUT);  
+  pinMode(VU_CLOCK_PIN, OUTPUT);
+  pinMode(VU_PWM_PIN_R, OUTPUT);
+  pinMode(VU_PWM_PIN_G, OUTPUT);
+
+  // testing vu
+  analogWrite(VU_PWM_PIN_R, 255);
+  analogWrite(VU_PWM_PIN_G, 255);
+  
+  
   // initialize the pushbutton pins as an input:
   for(int i=0; i<NR_OF_BUTTONS; i++) {
     pinMode(pinButton[i], INPUT);
@@ -111,7 +142,10 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
     if (note < NR_OF_LEDS) {
       digitalWrite(ledMappings[note], HIGH);
       // reply for testing
-      MIDI.sendNoteOn(note,velocity,channel);
+      //MIDI.sendNoteOn(note,velocity,channel);
+    }
+    if(note == NOTE_VU_DECK_LEFT) {
+        setVU(velocity);
     }
 }
 
@@ -121,7 +155,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
     if (note < NR_OF_LEDS) {
       digitalWrite(ledMappings[note], LOW);
       // reply for testing
-      MIDI.sendNoteOn(note,velocity,channel);
+      //MIDI.sendNoteOn(note,velocity,channel);
     }
 }
 
@@ -193,5 +227,38 @@ void checkButton(int i) {
     buttonState[i] = btnValue;
   }
 
+}
+
+
+// This method sends bits to the shift registers:
+
+void setVU(int value) {
+  value = value-1;
+  // the bits you want to send. Use an unsigned int,
+  // so you can use all 16 bits:
+  unsigned int bitsToSend = 0;    
+
+  // turn off the output so the pins don't light up
+  // while you're shifting bits:
+  digitalWrite(VU_LATCH_PIN, LOW);
+
+  // turn on the next highest bit in bitsToSend:
+  int i = 0;
+  while (i <= value) {
+    bitWrite(bitsToSend, i, HIGH);
+    i++;
+  }
+
+  // break the bits into two bytes, one for 
+  // the first register and one for the second:
+  byte registerOne = highByte(bitsToSend);
+  byte registerTwo = lowByte(bitsToSend);
+
+  // shift the bytes out:
+  shiftOut(VU_DATA_PIN, VU_CLOCK_PIN, MSBFIRST, registerOne);
+  shiftOut(VU_DATA_PIN, VU_CLOCK_PIN, MSBFIRST, registerTwo);
+
+  // turn on the output so the LEDs can light up:
+  digitalWrite(VU_LATCH_PIN, HIGH);
 }
 

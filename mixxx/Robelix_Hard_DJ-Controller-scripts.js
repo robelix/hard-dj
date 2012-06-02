@@ -18,26 +18,77 @@ function HardDJ() {}
 
 HardDJ.init = function(id){
     //print ("Initalizing Reloop Digital Jockey 2 Controler Edition.");
-	HardDJ.resetLEDs();
+    HardDJ.resetLEDs();
 
-	// map engine stuff for MIDI out
-	engine.connectControl("[Channel1]","play","HardDJ.isChannel1_Playing");
-	engine.connectControl("[Channel2]","play","HardDJ.isChannel2_Playing");
-	
+    // map engine stuff for MIDI out
+    engine.connectControl("[Channel1]","play","HardDJ.isChannel1_Playing");
+    engine.connectControl("[Channel2]","play","HardDJ.isChannel2_Playing");
 
+    // mp vu-meters
+    engine.connectControl("[Channel1]", "VuMeter", 	"HardDJ.meter");
+    engine.connectControl("[Channel2]", "VuMeter",	"HardDJ.meter");
+    engine.connectControl("[Master]", 	"VuMeterL", 	"HardDJ.meter");
+    engine.connectControl("[Master]", 	"VuMeterR", 	"HardDJ.meter");
 }
 
+HardDJ.vuValues = Array();
+
+HardDJ.meter = function(value, group, key) { 
+    var deck = HardDJ.groupToDeck(group);
+    // there is 16 leds in HardDJ volume meter.
+    
+
+    var val = Math.round(parseFloat(value) * 16);     
+
+    if (val != HardDJ.vuValues[group])  {
+      HardDJ.vuValues[group] = val;
+
+      if (deck == 0) {
+	  HardDJ.sendLED(100, val);
+      } // else if (deck == 1) {
+	//  HardDJ.sendLED(101, val);
+      //} else {
+	//  if (key == "VuMeterL") {
+	  //    HardDJ.sendLED(102, val);
+	  //} else {
+	  //    HardDJ.sendLED(103, val);
+	  //}
+      //}
+    }
+}
+
+HardDJ.groupToDeck = function(group) {
+    var the_char = group.charAt(8);
+    
+	if (the_char == '1') {
+		return 0;
+	} else if (the_char == '2') {
+		return 1;
+	} else {
+        return -1;
+    }
+}
+
+
+HardDJ.sendLED = function(lednr, val) {
+	    midi.sendShortMsg(0x93, lednr, val);
+}
 HardDJ.sendLEDon = function(lednr) {
-	    midi.sendShortMsg(0x83, lednr, 1);
+	    midi.sendShortMsg(0x93, lednr, 1);
 }
 HardDJ.sendLEDoff = function(lednr) {
-	    midi.sendShortMsg(0x93, lednr, 1);
+	    midi.sendShortMsg(0x83, lednr, 1);
 }
 
 
 HardDJ.resetLEDs = function() {
-    HardDJ.sendLEDoff(0x00);
-    HardDJ.sendLEDoff(0x01);
+    HardDJ.sendLEDoff(0);
+    HardDJ.sendLEDoff(1);
+    
+    HardDJ.sendLEDoff(100);
+    HardDJ.sendLEDoff(101);
+    HardDJ.sendLEDoff(102);
+    HardDJ.sendLEDoff(103);
 }
 
 
