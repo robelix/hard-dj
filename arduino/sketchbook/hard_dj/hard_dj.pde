@@ -6,7 +6,12 @@
  
  Licence: Creative Commons CC-BY-SA 3.0
  
+ for Arduino Mega 2560
+ 
 */
+
+
+// Libs //
 
 #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
@@ -15,6 +20,7 @@
 
 
 // MIDI //
+
 #define MIDI_LISTEN_CHANNEL  4
 #define MIDI_BUTTON_CHANNEL  1
 #define MIDI_FADER_CHANNEL   2
@@ -26,16 +32,19 @@
 #define NOTE_VU_MASTER_RIGHT 103
 
 
+
 // BUTTONS //
 
-// button pins
-#define NR_OF_BUTTONS 16
-const int pinButton[NR_OF_BUTTONS] = {38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53};
-// button last states
-int buttonState[NR_OF_BUTTONS]      = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-// button last change time for debounce
-long buttonDebounce[NR_OF_BUTTONS]  = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-#define BUTTON_DEBOUNCE_DELAY 100
+#define KEYMATRIX_ROWS 4
+#define KEYMATRIX_COLS 4
+#define KEYMATRIX_DEBOUNCE 4
+
+byte keymatrixRowPins[KEYMATRIX_ROWS] = {22, 24, 26, 28};
+byte keymatrixColPins[KEYMATRIX_COLS] = {23, 25, 27, 29};
+
+boolean keymatrixStates[KEYMATRIX_ROWS][KEYMATRIX_COLS];
+unsigned long keymatrixDebounce[KEYMATRIX_ROWS][KEYMATRIX_COLS];
+
 
 
 // LEDS //
@@ -52,7 +61,9 @@ const int ledR1 =  3;
 const int ledPins[NR_OF_LEDS] = {LED_L_PLAY, LED_R_PLAY, LED_L_CUE, LED_R_CUE};
 const int ledMappings[2] = {LED_L_PLAY, LED_R_PLAY};
 
+
 // VU //
+
 //Pin connected to latch pin (ST_CP) of 74HC595
 #define VU_LATCH_PIN 8
 //Pin connected to clock pin (SH_CP) of 74HC595
@@ -121,17 +132,15 @@ void setup() {
   analogWrite(VU_PWM_PIN_R, 255);
   analogWrite(VU_PWM_PIN_G, 255);
   
-  
-  // initialize the pushbutton pins as an input:
-  for(int i=0; i<NR_OF_BUTTONS; i++) {
-    pinMode(pinButton[i], INPUT);
-  }
+  // keymatrix
+  initKeymatrix();
 };
+
 
 
 void loop(){
   checkEncoders();
-  checkButtons();
+  readKeymatrix();
   checkFaders();
   MIDI.read();
 };
@@ -184,11 +193,68 @@ void checkFaders() {
 
 
 
-void checkButtons() {
-  for( int i=0; i<NR_OF_BUTTONS; i++ ) {
-    checkButton(i);
+void initKeymatrix() {
+  
+  // clear arrays
+  for (byte r=0; r<KEYMATRIX_ROWS; r++) {
+    for (byte c=0; c<KEYMATRIX_COLS; c++) {
+      keymatrixStates[r][c]=0;
+      keymatrixDebounce[r][c]=0;
+    }
   }
+  
+  //configure column pin modes and states
+  for (byte c=0; c<KEYMATRIX_COLS; c++) {
+      pinMode(keymatrixColPins[c],OUTPUT);
+      digitalWrite(keymatrixColPins[c],LOW);
+  }
+  
+  //configure row pin modes and states
+  for (byte r=0; r<KEYMATRIX_ROWS; r++) {
+      pinMode(keymatrixRowPins[r],INPUT);
+      digitalWrite(keymatrixRowPins[r],HIGH);	// Enable the internal 20K pullup resistors for each row pin.
+  }
+  
+}
+
+
+void readKeymatrix() {
+  
+  // run through cols
+  for( int c=0; c<KEYMATRIX_COLS; c++) {
+    digitalWrite(keymatrixColPins[c], LOW);
+    
+    // check rows
+    for( int r=0; r<KEYMATRIX_ROWS; r++) {
+      boolean currentValue = (digitalRead(keymatrixRowPins[r])<1);
+      if (currentValue != keymatrixStates[r][c]) {
+
+        // debounce
+        unsigned long currentTime = millis();
+        if(currentTime-KEYMATRIX_DEBOUNCE > keymatrixDebounce[r][c]) {
+          
+          int keyNr = r*KEYMATRIX_COLS+c;
+          sendKeyMessage(keyNr, currentValue);
+          keymatrixStates[r][c] = currentValue;
+          keymatrixDebounce[r][c] = currentTime;
+        }
+      }
+    }
+
+    // reset col
+    digitalWrite(keymatrixColPins[c], HIGH);
+  }
+
 };
+
+
+void sendKeyMessage(int keyNr, boolean value) {
+  if (value) {
+    MIDI.sendNoteOn(byte(keyNr), 1, MIDI_BUTTON_CHANNEL);
+  } else {
+    MIDI.sendNoteOff(byte(keyNr), 1, MIDI_BUTTON_CHANNEL);
+  }
+}
 
 
 
@@ -204,34 +270,8 @@ void checkFader(int i) {
 
 
 
-void checkButton(int i) {
-  int btnValue = digitalRead(pinButton[i]);
-  
-    //debounce 
-  if (btnValue != buttonState[i]) {
-    long now = millis();
-    if ( (now - buttonDebounce[i]) > BUTTON_DEBOUNCE_DELAY) {
-      buttonDebounce[i] = now;
-    } else {
-      // zu früh reset state
-      btnValue = buttonState[i];
-    }
-  }
-  
-  if ( btnValue != buttonState[i]) {
-    if (btnValue == HIGH) {
-      MIDI.sendNoteOn(byte(i), 1, MIDI_BUTTON_CHANNEL);
-    } else {
-      MIDI.sendNoteOff(byte(i), 1, MIDI_BUTTON_CHANNEL);
-    }
-    buttonState[i] = btnValue;
-  }
-
-}
-
 
 // This method sends bits to the shift registers:
-
 void setVU(int value) {
   value = value-1;
   // the bits you want to send. Use an unsigned int,
