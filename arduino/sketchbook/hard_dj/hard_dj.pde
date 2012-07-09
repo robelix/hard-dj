@@ -49,17 +49,18 @@ unsigned long keymatrixDebounce[KEYMATRIX_ROWS][KEYMATRIX_COLS];
 
 // LEDS //
 
-const int ledL1 =  2;      // the number of the LED pin
-const int ledR1 =  3;
+//Pin connected to latch pin (ST_CP) of 74HC595
+#define LEDS_LATCH_PIN 51
+//Pin connected to clock pin (SH_CP) of 74HC595
+#define LEDS_CLOCK_PIN 52
+////Pin connected to Data in (DS) of 74HC595
+#define LEDS_DATA_PIN 53
+// nr of shift registers
+#define LEDS_NR_OF_74HC595 2
 
-#define NR_OF_LEDS 4
-#define LED_L_PLAY 2
-#define LED_R_PLAY 3
-#define LED_L_CUE 4
-#define LED_R_CUE 5
+byte ledsData[LEDS_NR_OF_74HC595];
+boolean ledsDataChanged = false;
 
-const int ledPins[NR_OF_LEDS] = {LED_L_PLAY, LED_R_PLAY, LED_L_CUE, LED_R_CUE};
-const int ledMappings[2] = {LED_L_PLAY, LED_R_PLAY};
 
 
 // VU //
@@ -114,12 +115,14 @@ void setup() {
   Serial.begin(115200);
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleNoteOff(handleNoteOff);
-    
-  // initialize the LEDs pin as an output:
-  for(int i=0; i<NR_OF_LEDS; i++) {
-    pinMode(ledPins[i], OUTPUT);
-  };
-  pinMode(13,OUTPUT);
+
+  // LEDs    
+  pinMode(LEDS_LATCH_PIN, OUTPUT);
+  pinMode(LEDS_CLOCK_PIN, OUTPUT);  
+  pinMode(LEDS_DATA_PIN, OUTPUT);
+  for (int i=0; i < LEDS_NR_OF_74HC595; i++) {
+    ledsData[i] = 0;
+  }
   
   // init vu
   pinMode(VU_LATCH_PIN, OUTPUT);
@@ -143,15 +146,14 @@ void loop(){
   readKeymatrix();
   checkFaders();
   MIDI.read();
+  shiftOutLEDS();
 };
 
 
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
-    if (note < NR_OF_LEDS) {
-      digitalWrite(ledMappings[note], HIGH);
-      // reply for testing
-      //MIDI.sendNoteOn(note,velocity,channel);
+    if (note/8 < LEDS_NR_OF_74HC595 ) {
+      writeLED(note,HIGH);
     }
     if(note == NOTE_VU_DECK_LEFT) {
         setVU(velocity);
@@ -161,11 +163,32 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
 
 
 void handleNoteOff(byte channel, byte note, byte velocity) {
-    if (note < NR_OF_LEDS) {
-      digitalWrite(ledMappings[note], LOW);
-      // reply for testing
-      //MIDI.sendNoteOn(note,velocity,channel);
+    if (note/8 < LEDS_NR_OF_74HC595 ) {
+      writeLED(note,LOW);
     }
+}
+
+
+void writeLED(byte ledNr, byte highlow) {
+  byte chipNr = ledNr/8;
+  byte pinNr = ledNr%8;
+  if(chipNr < LEDS_NR_OF_74HC595) {
+    bitWrite(ledsData[chipNr], pinNr, highlow);
+    ledsDataChanged = true;
+  }
+}
+
+
+void shiftOutLEDS() {
+  if (ledsDataChanged) {
+    digitalWrite(LEDS_LATCH_PIN, LOW);
+    // shift out in reverse order
+    for(int i = LEDS_NR_OF_74HC595-1; i>=0; i--) {
+      shiftOut(LEDS_DATA_PIN, LEDS_CLOCK_PIN, MSBFIRST, ledsData[i]);
+    }
+  }
+  digitalWrite(LEDS_LATCH_PIN, HIGH);
+  ledsDataChanged = false;
 }
 
 
