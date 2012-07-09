@@ -16,6 +16,36 @@ function HardDJ() {}
 //HardDJ.CUP_Button2_IsActive = false;
 
 
+// led number setup
+HardDJ.Leds = {
+  
+    // left deck
+  1: {
+      'play_red':	8,
+      'play_green':	9,
+      'play_blue':	10,
+      'cue_red':	12,
+      'cue_green':	13,
+      'cue_blue':	14,
+      'headphone':	11,
+      'scratching':	15
+  },
+  
+  // right deck
+  2: {
+      'play_red':	0,
+      'play_green':	1,
+      'play_blue':	2,
+      'cue_red':	4,
+      'cue_green':	5,
+      'cue_blue':	6,
+      'headphone':	3,
+      'scratching':	7
+  }
+  
+}; 
+
+
 HardDJ.init = function(id){
     //print ("Initalizing Reloop Digital Jockey 2 Controler Edition.");
     HardDJ.resetLEDs();
@@ -23,12 +53,13 @@ HardDJ.init = function(id){
     // map engine stuff for MIDI out
     engine.connectControl("[Channel1]","play","HardDJ.isChannel1_Playing");
     engine.connectControl("[Channel2]","play","HardDJ.isChannel2_Playing");
+    engine.connectControl("[Channel1]","pfl","HardDJ.isChannel1_HeadphonesOn");
+    engine.connectControl("[Channel2]","pfl","HardDJ.isChannel2_HeadphonesOn");
 
     // mp vu-meters
     engine.connectControl("[Channel1]", "VuMeter", 	"HardDJ.meter");
     engine.connectControl("[Channel2]", "VuMeter",	"HardDJ.meter");
-    engine.connectControl("[Master]", 	"VuMeterL", 	"HardDJ.meter");
-    engine.connectControl("[Master]", 	"VuMeterR", 	"HardDJ.meter");
+    engine.connectControl("[Master]", 	"VuMeter", 	"HardDJ.meter");
 }
 
 HardDJ.vuValues = Array();
@@ -71,43 +102,65 @@ HardDJ.groupToDeck = function(group) {
 
 
 HardDJ.sendLED = function(lednr, val) {
-	    midi.sendShortMsg(0x93, lednr, val);
+	    //midi.sendShortMsg(0x93, lednr, val);
 }
-HardDJ.sendLEDon = function(lednr) {
-	    midi.sendShortMsg(0x93, lednr, 1);
+HardDJ.sendLEDon = function(channel, ledname) {
+	    midi.sendShortMsg(0x93, HardDJ.getLedNr(channel,ledname), 1);
 }
-HardDJ.sendLEDoff = function(lednr) {
-	    midi.sendShortMsg(0x83, lednr, 1);
+HardDJ.sendLEDoff = function(channel, ledname) {
+	    midi.sendShortMsg(0x83, HardDJ.getLedNr(channel,ledname), 1);
+}
+HardDJ.getLedNr = function(channel,ledname) {
+    return HardDJ.Leds[channel][ledname];
 }
 
 
 HardDJ.resetLEDs = function() {
-    HardDJ.sendLEDoff(0);
-    HardDJ.sendLEDoff(1);
+    //HardDJ.sendLEDoff(0);
+    //HardDJ.sendLEDoff(1);
     
-    HardDJ.sendLEDoff(100);
-    HardDJ.sendLEDoff(101);
-    HardDJ.sendLEDoff(102);
-    HardDJ.sendLEDoff(103);
+    //HardDJ.sendLEDoff(100);
+    //HardDJ.sendLEDoff(101);
+    //HardDJ.sendLEDoff(102);
+    //HardDJ.sendLEDoff(103);
 }
 
 
 HardDJ.isChannel1_Playing = function (value){
-  script.debug(1, 'playing', value, 0, 0);
-  if(value == 0){
-     HardDJ.sendLEDon(0x00);
-  }
-  else{ //if deck is playing 
-    HardDJ.sendLEDoff(0x00);
-  }
+    script.debug(1, 'playing', value, 0, 0);
+    if(value == 0){
+	HardDJ.sendLEDoff(1,'play_green');
+	HardDJ.sendLEDon(1,'play_red');
+    }
+    else{ //if deck is playing 
+	HardDJ.sendLEDoff(1,'play_red');
+	HardDJ.sendLEDon(1,'play_green');
+    }
 }
 HardDJ.isChannel2_Playing = function (value){
-  if(value == 0){
-    HardDJ.sendLEDon(0x01);
-  }
-  else{
-    HardDJ.sendLEDoff(0x01);
-  }	
+    if(value == 0){
+	HardDJ.sendLEDoff(2,'play_green');
+	HardDJ.sendLEDon(2,'play_red');
+    }
+    else{ //if deck is playing 
+	HardDJ.sendLEDoff(2,'play_red');
+	HardDJ.sendLEDon(2,'play_green');
+    }
+}
+
+HardDJ.isChannel1_HeadphonesOn = function(value) {
+    if(value == 0) {
+	HardDJ.sendLEDoff(1,'headphone');
+    } else {
+	HardDJ.sendLEDon(1,'headphone');
+    }
+}
+HardDJ.isChannel2_HeadphonesOn = function(value) {
+    if(value == 0) {
+	HardDJ.sendLEDoff(2,'headphone');
+    } else {
+	HardDJ.sendLEDon(2,'headphone');
+    }
 }
 
 /* Jog Wheels */
@@ -139,15 +192,18 @@ HardDJ.scratchEnable2 = function(channel, control, value) {
 HardDJ.switchOnScratch = function(channel) {
       var alpha = 1.0/8;
       var beta = alpha/32;
-      engine.scratchEnable(channel, 480, 60, alpha, beta);
+      engine.scratchEnable(channel, 240, 60, alpha, beta);
+      HardDJ.sendLEDon(channel,'scratching');
 }
 HardDJ.scratchDisable1 = function(channel,control,value) {
-  HardDJ.scratchMode[1] = false;
-  engine.scratchDisable(1);
+    HardDJ.scratchMode[1] = false;
+    engine.scratchDisable(1);
+    HardDJ.sendLEDoff(1,'scratching');
 }
 HardDJ.scratchDisable2 = function(channel,control,value) {
-  HardDJ.scratchMode[2] = false;
-  engine.scratchDisable(2);
+    HardDJ.scratchMode[2] = false;
+    engine.scratchDisable(2);
+    HardDJ.sendLEDoff(2,'scratching');
 }
 
 HardDJ.speedEnable1 = function(channel, control, value) {
@@ -200,6 +256,23 @@ HardDJ.chSpeed = function(channel,control,value) {
       engine.setValue("[Channel"+channel+"]", "rate_perm_up_small",0.25);
     } else {
       engine.setValue("[Channel"+channel+"]", "rate_perm_down_small",0.25);
+    }
+}
+
+
+HardDJ.headphoneToggle1 = function (channel, control, value) {
+    if (engine.getValue("[Channel1]", "pfl")==0) {
+	engine.setValue("[Channel1]", "pfl", 1);
+    } else {
+	engine.setValue("[Channel1]", "pfl", 0);
+    }
+}
+
+HardDJ.headphoneToggle2 = function (channel, control, value) {
+    if (engine.getValue("[Channel2]", "pfl")==0) {
+	engine.setValue("[Channel2]", "pfl", 1);
+    } else {
+	engine.setValue("[Channel2]", "pfl", 0);
     }
 }
 

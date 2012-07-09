@@ -9,7 +9,8 @@
 	<file functionprefix="HardDJ" filename="Robelix_Hard_DJ-Controller-scripts.js"/>
     </scriptfiles>
       <controls>
-	  <control>
+	<!-- Job-Wheels -->
+	<control>
 	      <status>0xB2</status>
 	      <midino>0x01</midino>
 	      <group>[Channel1]</group>
@@ -19,7 +20,6 @@
 		  <script-binding/>
 	      </options>
 	  </control>
-
 	  <control>
 	      <status>0xB2</status>
 	      <midino>0x02</midino>
@@ -31,9 +31,10 @@
 	      </options>
 	  </control>
 	  
+	    <!-- scratch enable -->
 	    <control>
                 <status>0x90</status>
-                <midino>0x4</midino>
+                <midino>0x0c</midino>
                 <group>[Channel1]</group>
                 <key>HardDJ.scratchEnable1</key>
                 <description></description>
@@ -43,7 +44,7 @@
             </control>
 	    <control>
                 <status>0x80</status>
-                <midino>0x4</midino>
+                <midino>0x0c</midino>
                 <group>[Channel1]</group>
                 <key>HardDJ.scratchDisable1</key>
                 <description></description>
@@ -51,10 +52,9 @@
                     <script-binding/>
                 </options>
             </control>
-
        	    <control>
                 <status>0x90</status>
-                <midino>0x3</midino>
+                <midino>0x04</midino>
                 <group>[Channel2]</group>
                 <key>HardDJ.scratchEnable2</key>
                 <description></description>
@@ -64,7 +64,7 @@
             </control>
 	    <control>
                 <status>0x80</status>
-                <midino>0x3</midino>
+                <midino>0x04</midino>
                 <group>[Channel2]</group>
                 <key>HardDJ.scratchDisable2</key>
                 <description></description>
@@ -73,9 +73,10 @@
                 </options>
             </control>
 
+	    <!-- speed wheel -->
             <control>
                 <status>0x90</status>
-                <midino>0x5</midino>
+                <midino>0x0d</midino>
                 <group>[Channel1]</group>
                 <key>HardDJ.speedEnable1</key>
                 <description></description>
@@ -85,7 +86,7 @@
             </control>
             <control>
                 <status>0x80</status>
-                <midino>0x5</midino>
+                <midino>0x0d</midino>
                 <group>[Channel1]</group>
                 <key>HardDJ.speedDisable1</key>
                 <description></description>
@@ -93,10 +94,9 @@
                     <script-binding/>
                 </options>
             </control>
-
             <control>
                 <status>0x90</status>
-                <midino>0x2</midino>
+                <midino>0x05</midino>
                 <group>[Channel2]</group>
                 <key>HardDJ.speedEnable2</key>
                 <description></description>
@@ -106,7 +106,7 @@
             </control>
             <control>
                 <status>0x80</status>
-                <midino>0x2</midino>
+                <midino>0x05</midino>
                 <group>[Channel2]</group>
                 <key>HardDJ.speedDisable2</key>
                 <description></description>
@@ -115,100 +115,10 @@
                 </options>
             </control>
 
-            
+	    <!-- play -->
             <control>
                 <status>0x90</status>
-                <midino>0x8</midino>
-                <group>[Channel2]</group>
-                <key>play</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0x9</midino>
-                <group>[Channel2]</group>
-                <key>cue_default</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0x6</midino>
-                <group>[Channel1]</group>
-                <key>beatsync</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0xa</midino>
-                <group>[Channel2]</group>
-                <key>fwd</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0xb</midino>
-                <group>[Channel2]</group>
-                <key>back</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0x0</midino>
-                <group>[Channel2]</group>
-                <key>pfl</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0xc</midino>
-                <group>[Channel1]</group>
-                <key>back</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0x0</midino>
-                <group>[Channel2]</group>
-                <key>beatsync</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0xd</midino>
-                <group>[Channel1]</group>
-                <key>cue_default</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0xe</midino>
+                <midino>0x0a</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
                 <description></description>
@@ -218,16 +128,123 @@
             </control>
             <control>
                 <status>0x90</status>
-                <midino>0xf</midino>
+                <midino>0x0b</midino>
                 <group>[Channel1]</group>
-                <key>fwd</key>
+                <key>play</key>
                 <description></description>
                 <options>
                     <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x02</midino>
+                <group>[Channel2]</group>
+                <key>play</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x03</midino>
+                <group>[Channel2]</group>
+                <key>play</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+	    
+	    <!-- cue -->
+            <control>
+                <status>0x90</status>
+                <midino>0x08</midino>
+                <group>[Channel1]</group>
+                <key>cue_default</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x09</midino>
+                <group>[Channel1]</group>
+                <key>cue_default</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x00</midino>
+                <group>[Channel2]</group>
+                <key>cue_default</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x01</midino>
+                <group>[Channel2]</group>
+                <key>cue_default</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+	    
+	    <!-- sync -->
+            <control>
+                <status>0x90</status>
+                <midino>0x0e</midino>
+                <group>[Channel1]</group>
+                <key>beatsync</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x06</midino>
+                <group>[Channel2]</group>
+                <key>beatsync</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+	    
+	    <!-- headphones -->
+            <control>
+                <status>0x80</status>
+                <midino>0x0f</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.headphoneToggle1</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x07</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.headphoneToggle2</key>
+                <description></description>
+                <options>
+                    <script-binding/>
                 </options>
             </control>
 
-            
+
+	    <!-- faders & potis -->
             <control>
                 <status>0xb1</status>
                 <midino>0x8</midino>
@@ -342,106 +359,6 @@
                 </options>
             </control>
 
-            <control>
-                <status>0x80</status>
-                <midino>0x6</midino>
-                <group>[Channel1]</group>
-                <key>pfl</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0x7</midino>
-                <group>[Channel1]</group>
-                <key>beatsync</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0x8</midino>
-                <group>[Channel2]</group>
-                <key>play</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0x9</midino>
-                <group>[Channel2]</group>
-                <key>cue_default</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0xa</midino>
-                <group>[Channel2]</group>
-                <key>fwd</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0xb</midino>
-                <group>[Channel2]</group>
-                <key>back</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0xc</midino>
-                <group>[Channel1]</group>
-                <key>back</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0xd</midino>
-                <group>[Channel1]</group>
-                <key>cue_default</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0xe</midino>
-                <group>[Channel1]</group>
-                <key>play</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x80</status>
-                <midino>0xf</midino>
-                <group>[Channel1]</group>
-                <key>fwd</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
         </controls>
       <outputs />
   </controller>
