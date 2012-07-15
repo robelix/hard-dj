@@ -66,32 +66,38 @@ HardDJ.vuValues = Array();
 
 HardDJ.meter = function(value, group, key) { 
     var deck = HardDJ.groupToDeck(group);
-    // there is 16 leds in HardDJ volume meter.
-    
+    value = parseFloat(value);
 
-    var val = Math.round(parseFloat(value) * 16);     
+    if (deck == 0) {
+	//HardDJ.sendLED(122, val);
+	//HardDJ.sendLED(120, val);
+    } else if (deck == 1) {
+	//HardDJ.sendLED(121, val);
+    } else {
 
-    if (val != HardDJ.vuValues[group])  {
-      HardDJ.vuValues[group] = val;
-
-      if (deck == 0) {
-	  HardDJ.sendLED(100, val);
-      } // else if (deck == 1) {
-	//  HardDJ.sendLED(101, val);
-      //} else {
-	//  if (key == "VuMeterL") {
-	  //    HardDJ.sendLED(102, val);
-	  //} else {
-	  //    HardDJ.sendLED(103, val);
-	  //}
-      //}
+	    
+	// nur oberstes viertel 
+	value = (value*1.7)-0.7;
+	if (value<0) { value=0; };
+	value = value*value;
+	value = value-0.25;
+	value = value *2;
+	if (value<0) { value=0; };
+	if (value>1) { value=1; };
+	var val = Math.round(value * 127);
+	
+	if (val != HardDJ.vuValues[4])  { // 4 case led value
+	    // Master
+	    HardDJ.sendLED(123, val);
+	    HardDJ.vuValues[4] = val;
+	}
     }
 }
 
 HardDJ.groupToDeck = function(group) {
     var the_char = group.charAt(8);
     
-	if (the_char == '1') {
+    if (the_char == '1') {
 		return 0;
 	} else if (the_char == '2') {
 		return 1;
@@ -102,13 +108,13 @@ HardDJ.groupToDeck = function(group) {
 
 
 HardDJ.sendLED = function(lednr, val) {
-	    //midi.sendShortMsg(0x93, lednr, val);
+    midi.sendShortMsg(0x93, lednr, val);
 }
 HardDJ.sendLEDon = function(channel, ledname) {
-	    midi.sendShortMsg(0x93, HardDJ.getLedNr(channel,ledname), 1);
+    midi.sendShortMsg(0x93, HardDJ.getLedNr(channel,ledname), 1);
 }
 HardDJ.sendLEDoff = function(channel, ledname) {
-	    midi.sendShortMsg(0x83, HardDJ.getLedNr(channel,ledname), 1);
+    midi.sendShortMsg(0x83, HardDJ.getLedNr(channel,ledname), 1);
 }
 HardDJ.getLedNr = function(channel,ledname) {
     return HardDJ.Leds[channel][ledname];
@@ -116,6 +122,7 @@ HardDJ.getLedNr = function(channel,ledname) {
 
 
 HardDJ.resetLEDs = function() {
+    HardDJ.sendLED(123,0);
     //HardDJ.sendLEDoff(0);
     //HardDJ.sendLEDoff(1);
     

@@ -26,10 +26,10 @@
 #define MIDI_FADER_CHANNEL   2
 #define MIDI_ENCODER_CHANNEL 3
 
-#define NOTE_VU_DECK_LEFT    100
-#define NOTE_VU_DECK_RIGHT   101
-#define NOTE_VU_MASTER_LEFT  102
-#define NOTE_VU_MASTER_RIGHT 103
+#define NOTE_VU_DECK_LEFT   120
+#define NOTE_VU_DECK_RIGHT  121
+#define NOTE_VU_MASTER      122
+#define NOTE_CASE_LEDS      123
 
 
 
@@ -61,6 +61,8 @@ unsigned long keymatrixDebounce[KEYMATRIX_ROWS][KEYMATRIX_COLS];
 byte ledsData[LEDS_NR_OF_74HC595];
 boolean ledsDataChanged = false;
 
+#define PIN_PWM_CASE_LEDS 13
+
 
 
 // VU //
@@ -74,9 +76,9 @@ boolean ledsDataChanged = false;
 
 char vuString[2];
 
-#define VU_PWM_PIN_G 12
-#define VU_PWM_PIN_R 13
-#define VU_PWM_PIN_B 0
+#define VU_PWM_PIN_G 10
+#define VU_PWM_PIN_R 11
+#define VU_PWM_PIN_B 12
 
 
 
@@ -123,6 +125,7 @@ void setup() {
   for (int i=0; i < LEDS_NR_OF_74HC595; i++) {
     ledsData[i] = 0;
   }
+  pinMode(PIN_PWM_CASE_LEDS, OUTPUT);
   
   // init vu
   pinMode(VU_LATCH_PIN, OUTPUT);
@@ -158,6 +161,9 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
     if(note == NOTE_VU_DECK_LEFT) {
         setVU(velocity);
     }
+    if(note == NOTE_CASE_LEDS) {
+      setCaseLeds(velocity);
+    }
 }
 
 
@@ -166,6 +172,11 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
     if (note/8 < LEDS_NR_OF_74HC595 ) {
       writeLED(note,LOW);
     }
+}
+
+
+void setCaseLeds(byte value) {
+  analogWrite(PIN_PWM_CASE_LEDS, value*2);
 }
 
 
