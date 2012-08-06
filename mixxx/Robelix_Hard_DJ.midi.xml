@@ -279,7 +279,7 @@
             
             <control>
                 <status>0xb1</status>
-                <midino>0x0</midino>
+                <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>pregain</key>
                 <description></description>
@@ -289,7 +289,7 @@
             </control>
             <control>
                 <status>0xb1</status>
-                <midino>0x1</midino>
+                <midino>0x2</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
                 <description></description>
@@ -299,7 +299,7 @@
             </control>
             <control>
                 <status>0xb1</status>
-                <midino>0x2</midino>
+                <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
                 <description></description>
@@ -309,7 +309,7 @@
             </control>
             <control>
                 <status>0xb1</status>
-                <midino>0x3</midino>
+                <midino>0x0</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
                 <description></description>
@@ -320,7 +320,7 @@
             
             <control>
                 <status>0xb1</status>
-                <midino>0x4</midino>
+                <midino>0x7</midino>
                 <group>[Channel2]</group>
                 <key>pregain</key>
                 <description></description>
@@ -330,7 +330,7 @@
             </control>
             <control>
                 <status>0xb1</status>
-                <midino>0x5</midino>
+                <midino>0x6</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
                 <description></description>
@@ -340,7 +340,7 @@
             </control>
             <control>
                 <status>0xb1</status>
-                <midino>0x6</midino>
+                <midino>0x5</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
                 <description></description>
@@ -350,7 +350,7 @@
             </control>
             <control>
                 <status>0xb1</status>
-                <midino>0x7</midino>
+                <midino>0x4</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
                 <description></description>
