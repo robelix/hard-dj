@@ -10,8 +10,8 @@
 
 #include "MIDI.h"
 #include <stdlib.h>
-//#include "Arduino.h"			// If using an old (pre-1.0) version of Arduino, use WConstants.h instead of Arduino.h
-#include "WConstants.h"
+#include "Arduino.h"			// If using an old (pre-1.0) version of Arduino, use WConstants.h instead of Arduino.h
+//#include "WConstants.h"
 #include "HardwareSerial.h"
 
 
