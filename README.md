@@ -2,6 +2,9 @@
 
 using old Harddisks as jog wheels
 
+Have a look to the wiki https://github.com/robelix/hard-dj/wiki for more documentation  
+
+
 ## Contents:
 
 * arduino/libraries - Required arduino libs
@@ -9,6 +12,7 @@ using old Harddisks as jog wheels
 * encoder - encoder wheels for lasercutting
 * mixxx - MIDI-mapping for mixxx http://mixxx.org/
 * eagle - sketches and pcbs
+* ttymidi - serial to midi tool for linux
 
 
 ## License:
@@ -35,3 +39,9 @@ arduino/libraries/Encoder/
 http://www.pjrc.com/teensy/td_libs_Encoder.html  
 by PJRC.COM, LLC - Paul Stoffregen <paul@pjrc.com>  
 License: MIT  
+
+### ttymidi
+ttymidi/  
+http://www.varal.org/ttymidi/  
+by Thiago Teixeira, Jari Suominen  
+License GPL 3 or later  
