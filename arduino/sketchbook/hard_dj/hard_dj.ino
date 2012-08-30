@@ -35,11 +35,11 @@
 
 // BUTTONS //
 
-#define KEYMATRIX_ROWS 4
+#define KEYMATRIX_ROWS 10
 #define KEYMATRIX_COLS 4
 #define KEYMATRIX_DEBOUNCE 4
 
-byte keymatrixRowPins[KEYMATRIX_ROWS] = {22, 24, 26, 28};
+byte keymatrixRowPins[KEYMATRIX_ROWS] = {22, 24, 26, 28, 30, 32, 34, 31, 33, 35};
 byte keymatrixColPins[KEYMATRIX_COLS] = {23, 25, 27, 29};
 
 boolean keymatrixStates[KEYMATRIX_ROWS][KEYMATRIX_COLS];
@@ -56,7 +56,7 @@ unsigned long keymatrixDebounce[KEYMATRIX_ROWS][KEYMATRIX_COLS];
 ////Pin connected to Data in (DS) of 74HC595
 #define LEDS_DATA_PIN 53
 // nr of shift registers
-#define LEDS_NR_OF_74HC595 2
+#define LEDS_NR_OF_74HC595 5
 
 byte ledsData[LEDS_NR_OF_74HC595];
 boolean ledsDataChanged = false;
