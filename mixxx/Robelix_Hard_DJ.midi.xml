@@ -14,7 +14,7 @@
 	      <status>0xB2</status>
 	      <midino>0x01</midino>
 	      <group>[Channel1]</group>
-	      <key>HardDJ.JogWheel1</key>
+	      <key>HardDJ.JogWheel</key>
 	      <description></description>
 	      <options>
 		  <script-binding/>
@@ -24,7 +24,7 @@
 	      <status>0xB2</status>
 	      <midino>0x02</midino>
 	      <group>[Channel2]</group>
-	      <key>HardDJ.JogWheel2</key>
+	      <key>HardDJ.JogWheel</key>
 	      <description></description>
 	      <options>
 		  <script-binding/>
@@ -34,9 +34,9 @@
 	    <!-- scratch enable -->
 	    <control>
                 <status>0x90</status>
-                <midino>0x0c</midino>
+                <midino>0x11</midino>
                 <group>[Channel1]</group>
-                <key>HardDJ.scratchEnable1</key>
+                <key>HardDJ.scratchEnable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -44,9 +44,9 @@
             </control>
 	    <control>
                 <status>0x80</status>
-                <midino>0x0c</midino>
+                <midino>0x11</midino>
                 <group>[Channel1]</group>
-                <key>HardDJ.scratchDisable1</key>
+                <key>HardDJ.scratchDisable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -54,9 +54,9 @@
             </control>
        	    <control>
                 <status>0x90</status>
-                <midino>0x04</midino>
+                <midino>0x1d</midino>
                 <group>[Channel2]</group>
-                <key>HardDJ.scratchEnable2</key>
+                <key>HardDJ.scratchEnable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -64,9 +64,9 @@
             </control>
 	    <control>
                 <status>0x80</status>
-                <midino>0x04</midino>
+                <midino>0x1d</midino>
                 <group>[Channel2]</group>
-                <key>HardDJ.scratchDisable2</key>
+                <key>HardDJ.scratchDisable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -76,9 +76,9 @@
 	    <!-- speed wheel -->
             <control>
                 <status>0x90</status>
-                <midino>0x0d</midino>
+                <midino>0x18</midino>
                 <group>[Channel1]</group>
-                <key>HardDJ.speedEnable1</key>
+                <key>HardDJ.speedEnable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -86,9 +86,9 @@
             </control>
             <control>
                 <status>0x80</status>
-                <midino>0x0d</midino>
+                <midino>0x18</midino>
                 <group>[Channel1]</group>
-                <key>HardDJ.speedDisable1</key>
+                <key>HardDJ.speedDisable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -96,9 +96,9 @@
             </control>
             <control>
                 <status>0x90</status>
-                <midino>0x05</midino>
+                <midino>0x24</midino>
                 <group>[Channel2]</group>
-                <key>HardDJ.speedEnable2</key>
+                <key>HardDJ.speedEnable</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -106,40 +106,62 @@
             </control>
             <control>
                 <status>0x80</status>
-                <midino>0x05</midino>
+                <midino>0x24</midino>
                 <group>[Channel2]</group>
-                <key>HardDJ.speedDisable2</key>
+                <key>HardDJ.speedDisable</key>
                 <description></description>
                 <options>
                     <script-binding/>
                 </options>
             </control>
 
+	    <!-- seek wheel -->
+            <control>
+                <status>0x90</status>
+                <midino>0x14</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.seekEnable</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x14</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.seekDisable</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x20</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.seekEnable</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x20</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.seekDisable</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            
 	    <!-- play -->
             <control>
                 <status>0x90</status>
-                <midino>0x0a</midino>
-                <group>[Channel1]</group>
-                <key>play</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0x0b</midino>
-                <group>[Channel1]</group>
-                <key>play</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
                 <midino>0x02</midino>
-                <group>[Channel2]</group>
+                <group>[Channel1]</group>
                 <key>play</key>
                 <description></description>
                 <options>
@@ -149,6 +171,26 @@
             <control>
                 <status>0x90</status>
                 <midino>0x03</midino>
+                <group>[Channel1]</group>
+                <key>play</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x0a</midino>
+                <group>[Channel2]</group>
+                <key>play</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x0b</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
                 <description></description>
@@ -160,29 +202,9 @@
 	    <!-- cue -->
             <control>
                 <status>0x90</status>
-                <midino>0x08</midino>
-                <group>[Channel1]</group>
-                <key>cue_default</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
-                <midino>0x09</midino>
-                <group>[Channel1]</group>
-                <key>cue_default</key>
-                <description></description>
-                <options>
-                    <normal/>
-                </options>
-            </control>
-            <control>
-                <status>0x90</status>
                 <midino>0x00</midino>
-                <group>[Channel2]</group>
-                <key>cue_default</key>
+                <group>[Channel1]</group>
+                <key>cue_gotoandplay</key>
                 <description></description>
                 <options>
                     <normal/>
@@ -191,8 +213,49 @@
             <control>
                 <status>0x90</status>
                 <midino>0x01</midino>
+                <group>[Channel1]</group>
+                <key>cue_gotoandplay</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x07</midino>
+                <group>[Channel1]</group>
+                <key>cue_set</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+
+            <control>
+                <status>0x90</status>
+                <midino>0x08</midino>
                 <group>[Channel2]</group>
-                <key>cue_default</key>
+                <key>cue_gotoandplay</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x09</midino>
+                <group>[Channel2]</group>
+                <key>cue_gotoandplay</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x0f</midino>
+                <group>[Channel2]</group>
+                <key>cue_set</key>
                 <description></description>
                 <options>
                     <normal/>
@@ -202,7 +265,7 @@
 	    <!-- sync -->
             <control>
                 <status>0x90</status>
-                <midino>0x0e</midino>
+                <midino>0x1b</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
                 <description></description>
@@ -212,7 +275,7 @@
             </control>
             <control>
                 <status>0x90</status>
-                <midino>0x06</midino>
+                <midino>0x27</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
                 <description></description>
@@ -220,13 +283,135 @@
                     <normal/>
                 </options>
             </control>
-	    
+
+	    <!-- reverse -->
+            <control>
+                <status>0x90</status>
+                <midino>0x04</midino>
+                <group>[Channel1]</group>
+                <key>reverse</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x04</midino>
+                <group>[Channel1]</group>
+                <key>reverse</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x0c</midino>
+                <group>[Channel2]</group>
+                <key>reverse</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x0c</midino>
+                <group>[Channel2]</group>
+                <key>reverse</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+
+	    <!-- ff -->
+            <control>
+                <status>0x90</status>
+                <midino>0x06</midino>
+                <group>[Channel1]</group>
+                <key>fwd</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x06</midino>
+                <group>[Channel1]</group>
+                <key>fwd</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x0e</midino>
+                <group>[Channel2]</group>
+                <key>fwd</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x0e</midino>
+                <group>[Channel2]</group>
+                <key>fwd</key>
+                <description></description>
+                <options>
+                    <normal/>
+                </options>
+            </control>
+
+	    <!-- frev -->
+            <control>
+                <status>0x90</status>
+                <midino>0x05</midino>
+                <group>[Channel1]</group>
+                <key>back</key>
+                <description></description>
+                <options>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x05</midino>
+                <group>[Channel1]</group>
+                <key>back</key>
+                <description></description>
+                <options>
+                </options>
+            </control>
+            <control>
+                <status>0x90</status>
+                <midino>0x0d</midino>
+                <group>[Channel2]</group>
+                <key>back</key>
+                <description></description>
+                <options>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x0d</midino>
+                <group>[Channel2]</group>
+                <key>back</key>
+                <description></description>
+                <options>
+                </options>
+            </control>
+            
 	    <!-- headphones -->
             <control>
                 <status>0x80</status>
-                <midino>0x0f</midino>
+                <midino>0x10</midino>
                 <group>[Channel1]</group>
-                <key>HardDJ.headphoneToggle1</key>
+                <key>HardDJ.headphoneToggle</key>
                 <description></description>
                 <options>
                     <script-binding/>
@@ -234,16 +419,160 @@
             </control>
             <control>
                 <status>0x80</status>
-                <midino>0x07</midino>
+                <midino>0x1c</midino>
                 <group>[Channel2]</group>
-                <key>HardDJ.headphoneToggle2</key>
+                <key>HardDJ.headphoneToggle</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+	    
+	    <!-- pitch 1 -->
+            <control>
+                <status>0x80</status>
+                <midino>0x17</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.pitch1</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x23</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.pitch1</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+	    
+	    <!-- loop -->
+            <control>
+                <status>0x80</status>
+                <midino>0x19</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.setLoop2</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x12</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.setLoop4</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x16</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.loopDouble</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x15</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.loopHalve</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x1a</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.loopExit</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x13</midino>
+                <group>[Channel1]</group>
+                <key>HardDJ.loopStart</key>
                 <description></description>
                 <options>
                     <script-binding/>
                 </options>
             </control>
 
-
+            <control>
+                <status>0x80</status>
+                <midino>0x25</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.setLoop2</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x1e</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.setLoop4</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x22</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.loopDouble</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x21</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.loopHalve</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x26</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.loopExit</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            <control>
+                <status>0x80</status>
+                <midino>0x1f</midino>
+                <group>[Channel2]</group>
+                <key>HardDJ.loopStart</key>
+                <description></description>
+                <options>
+                    <script-binding/>
+                </options>
+            </control>
+            
 	    <!-- faders & potis -->
             <control>
                 <status>0xb1</status>
