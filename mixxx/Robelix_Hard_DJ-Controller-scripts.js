@@ -61,7 +61,11 @@ HardDJ.Leds = {
       'sync':		8
   }
 };
-HardDJ.caseLeds = 123;
+HardDJ.caseLeds     = 123;
+HardDJ.vuLedsCh1   = 119;
+HardDJ.vuLedsCh2   = 120;
+HardDJ.vuLedsLeft   = 121;
+HardDJ.vuLedsRight = 122;
 
 // status variables //
 //------------------//
@@ -82,10 +86,11 @@ HardDJ.seekMode = {
 	"[Channel2]" : false
 };
 HardDJ.vuValues = {
-	"[Channel1]" 	: 0,
-	"[Channel2]" 	: 0,
-	"[Master]"	: 0,
-	"caseLeds"	: 0
+	"channel1"  : 0,
+	"channel2"  : 0,
+	"left"	       : 0,
+	"right"	       : 0,
+	"caseLeds"  : 0
 };
 
 HardDJ.PitchBendSensitivity = 0.00001;
@@ -126,32 +131,59 @@ HardDJ.init = function(id){
     engine.connectControl("[Channel1]", "VuMeter", 	"HardDJ.meter");
     engine.connectControl("[Channel2]", "VuMeter",	"HardDJ.meter");
     engine.connectControl("[Master]", 	"VuMeter", 	"HardDJ.meter");
+    engine.connectControl("[Master]", 	"VuMeterL", 	"HardDJ.meter");
+    engine.connectControl("[Master]", 	"VuMeterR", 	"HardDJ.meter");
 }
-
 
 HardDJ.meter = function(value, group, key) { 
     value = parseFloat(value);
 
     if (group == "[Channel1]") {
-	//HardDJ.sendLED(122, val);
-	//HardDJ.sendLED(120, val);
+        // channel 1
+        var val = Math.round(value*12);
+        if (val != HardDJ.vuValues["channel1"]) {
+            HardDJ.sendLED(HardDJ.vuLedsCh1, val);
+            HardDJ.vuValues["channel1"] = val;
+        }
     } else if (group == "[Channel2]") {
-	//HardDJ.sendLED(121, val);
+        // channel 2
+        var val = Math.round(value*12);
+        if (val != HardDJ.vuValues["channel2"]) {
+            HardDJ.sendLED(HardDJ.vuLedsCh2, val);
+            HardDJ.vuValues["channel2"] = val;
+        }
     } else if (group == "[Master]") {
-	// some calculation to get nice values for case leds
-	value = (value*1.7)-0.7;
-	if (value<0) { value=0; };
-	value = value*value;
-	value = value-0.25;
-	value = value *2;
-	if (value<0) { value=0; };
-	if (value>1) { value=1; };
-	var val = Math.round(value * 127);
+        if (key == "VuMeterL") {
+            // master left
+            var val = Math.round(value*12);
+            if (val != HardDJ.vuValues["left"]) {
+                HardDJ.sendLED(HardDJ.vuLedsLeft, val);
+                HardDJ.vuValues["left"] = val;
+            }
+        } else if (key == "VuMeterR") {
+            // master right
+            var val = Math.round(value*12);
+            if (val != HardDJ.vuValues["right"]) {
+                HardDJ.sendLED(HardDJ.vuLedsRight, val);
+                HardDJ.vuValues["right"] = val;
+            }
+        } else if (key == "VuMeter") {
+            // Master Value - used for case leds
+            // some calculation to get nice values for case leds
+            value = (value*1.7)-0.7;
+            if (value<0) { value=0; };
+            value = value*value;
+            value = value-0.25;
+            value = value *2;
+            if (value<0) { value=0; };
+            if (value>1) { value=1; };
+            var val = Math.round(value * 127);
 	
-	if (val != HardDJ.vuValues["caseLeds"])  { // 4 case led value
-	    HardDJ.sendLED(HardDJ.caseLeds, val);
-	    HardDJ.vuValues["caseLeds"] = val;
-	}
+            if (val != HardDJ.vuValues["caseLeds"])  { // 4 case led value
+                HardDJ.sendLED(HardDJ.caseLeds, val);
+                HardDJ.vuValues["caseLeds"] = val;
+            }
+        }
     }
 }
 
